@@ -1,24 +1,44 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager gm;
 
     public GameObject qner;
+    public TMP_Text qnerName;
+    public Image qnerImage;
+    Qner nowQner;
+    bool qnerIsTekbeul;
     int Qcount;
     public TMP_Text QcountT;
     public Question[] questions;
     public Question nowQ;
     public TMP_Text qT;
+    public Action qset;
+    public Qner[] dayqner;
+    public string[] randomName;
 
-    public GameObject anser;
+    public TMP_Text timerT;
+    [SerializeField] float timer;
+    float time;
+
+    public RectTransform anser;
+    public RectTransform answers;
+    public Transform answerTransform;
     public GameObject pre_AnswerB;
 
+    public Transform hpTransform;
+    int hp;
+
     bool isquestionSet;
-    int days;
 
     private void Awake()
     {
@@ -28,49 +48,299 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UIEvent.Event.OnAnswerClicked += Answerd;
-
         ResetGame();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!isquestionSet)
+        if (!isquestionSet)
         {
-            SetQuestion();
+            time = UnityEngine.Random.Range(30, 51);
+
+            NewQuestion();
             isquestionSet = true;
         }
     }
 
     public void ResetGame()
     {
-        days = 0;
         Qcount = 0;
+        hp = 3;
 
         qner.SetActive(false);
         isquestionSet = false;
     }
 
-    public void NextDay()
+    IEnumerator TimerOn()
     {
-        days++;
+        bool isok = false;
+        timer = time;
+        yield return null;
+
+        timerT.gameObject.SetActive(false);
+        while (timer > 0)
+        {
+            timer -= Time.deltaTime;
+            timerT.text = $"{timer.ToString("F0")}...";
+
+            if (timer < time / 1.5f && !isok)
+            {
+                StartCoroutine(FadeIn(timerT.GetComponent<CanvasGroup>(), 1.5f));
+
+                isok = true;
+            }
+
+            yield return null;
+        }
+
+        if (timer <= 0)
+        {
+            Answerd(false);
+        }
     }
 
-    public void SetQuestion()
+    public void NewQuestion()
     {
+        StopAllCoroutines();
+
         qner.SetActive(true);
+        qner.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -850);
+        StartCoroutine(MovingAnimation(qner.GetComponent<RectTransform>(), new Vector2(0, 0)));
+
         Qcount++;
-        QcountT.text = Qcount.ToString();
 
-        int r = Random.Range(0, questions.Length);
-        nowQ = questions[r];
+        string a = null;
+        switch (Qcount)
+        {
+            case 1:
+                a = "st";
+                break;
+            case 2:
+                a = "nd";
+                break;
+            case 3:
+                a = "rd";
+                break;
+            default:
+                a = "th";
+                break;
+        }
 
-        qT.text = nowQ.Qtext;
+        QcountT.text = Qcount.ToString() + $"<size=80>{a}</size>";
+
+        qset = null;
+        SetQner();
+        qset?.Invoke();
     }
 
-    public void Answerd()
+    void SetQner()
     {
+        nowQner = null;
+        nowQ = null;
+        int r = UnityEngine.Random.Range(0, dayqner.Length);
 
+        nowQner = dayqner[r];
+        qnerImage.sprite = nowQner.qnerImage;
+
+        if (nowQner.myQuestion.Length == 0) // 이 자식은 평범한 자식입니다
+        {
+            qnerIsTekbeul = false;
+            int ran = UnityEngine.Random.Range(0, randomName.Length);
+            qnerName.text = randomName[ran];
+        }
+        else // 임마는 좀 특별캄 ㅇㅇ
+        {
+            qnerIsTekbeul = true;
+            qnerName.text = nowQner.qnerName;
+            int ran = UnityEngine.Random.Range(0, nowQner.myQuestion.Length);
+
+            nowQ = nowQner.myQuestion[ran];
+        }
+
+        qset += SetQ;
+    }
+
+    void SetQ()
+    {
+        bool iscorrectset = false;
+        List<string> list = new List<string>();
+        list.Clear();
+
+        // Question 세팅
+        if (!qnerIsTekbeul)
+        {
+            int r = UnityEngine.Random.Range(0, questions.Length);
+            nowQ = questions[r];
+        }
+
+        StartCoroutine(TypeText(qT, nowQ.Qtext));
+        StartCoroutine(TimerOn());
+
+        // Answer 버튼 세팅
+        StartCoroutine(AnswerSet());
+
+        for (int i = 0; i < 3; i++)
+        {
+            string ans = null;
+            GameObject b = Instantiate(pre_AnswerB, answerTransform);
+
+            bool isimi = true;
+            int selectqnum = 0;
+            int isthatcorrect = 0;
+            while (isimi)
+            {
+                selectqnum = UnityEngine.Random.Range(0, nowQ.wrongAnswer.Length);
+                isthatcorrect = UnityEngine.Random.Range(1, 101);
+
+                if (list.Count != 0 && list.Contains(nowQ.wrongAnswer[selectqnum]))
+                {
+                    continue;
+                }
+                else
+                {
+                    isimi = false;
+                    break;
+                }
+            }
+
+            if (!isimi)
+            {
+                ans = nowQ.wrongAnswer[selectqnum];
+                Action act = null;
+
+                act = () => Answerd(false);
+                if (!iscorrectset)
+                {
+                    if (isthatcorrect <= 34 || i == 2)
+                    {
+                        iscorrectset = true;
+                        ans = nowQ.answer;
+                        act = () => Answerd(true);
+                    }
+                }
+
+                b.GetComponent<AnswerButton>().text.text = ans;
+                b.GetComponent<AnswerButton>().onclick = act;
+                list.Add(ans);
+            }
+        }
+    }
+
+    IEnumerator AnswerSet()
+    {
+        anser.localPosition = new Vector2(2250, 171);
+        answers.localPosition = new Vector2(1325f, 393);
+        yield return new WaitForSeconds(2f);
+
+        int r = UnityEngine.Random.Range(-54, -115);
+        anser.localRotation = Quaternion.Euler(0, 0, r);
+
+        Vector2 target = new Vector2(722, 171);
+        StartCoroutine(MovingAnimation(anser, target));
+
+        yield return new WaitForSeconds(1f);
+
+        StartCoroutine(MovingAnimation(answers, new Vector2(626f, answers.localPosition.y)));
+    }
+
+    IEnumerator MovingAnimation(RectTransform what, Vector2 target)
+    {
+        while (what.anchoredPosition != target)
+        {
+            float x = Mathf.Lerp(what.anchoredPosition.x, target.x, Time.deltaTime * 3);
+            float y = Mathf.Lerp(what.anchoredPosition.y, target.y, Time.deltaTime * 3);
+
+            what.anchoredPosition = new Vector2(x, y);
+            yield return null;
+        }
+    }
+
+    IEnumerator FadeIn(CanvasGroup what, float fadeTime)
+    {
+        float time = 0f;
+        what.gameObject.SetActive(true);
+        what.alpha = 0f;
+
+        while (time < fadeTime)
+        {
+            time += Time.deltaTime;
+            what.alpha = Mathf.Lerp(0f, 1f, time / fadeTime);
+            yield return null;
+        }
+
+        what.alpha = 1f;
+
+    }
+
+    IEnumerator TypeText(TMP_Text targetT, string text)
+    {
+        targetT.text = "";
+
+        foreach (char letter in text.ToCharArray())
+        {
+            targetT.text += letter;
+            yield return new WaitForSeconds(0.05f);
+        }
+    }
+
+    public void Answerd(bool iscorrected)
+    {
+        StopAllCoroutines();
+        StartCoroutine(MovingAnimation(anser, new Vector2(2250, 171)));
+        StartCoroutine(MovingAnimation(answers, new Vector2(1325f, 393)));
+        int r = 0;
+
+        if (iscorrected)
+        {
+            r = UnityEngine.Random.Range(0, nowQner.correctReact.Length);
+            StartCoroutine(TypeText(qT, nowQner.correctReact[r]));
+        }
+        else
+        {
+            r = UnityEngine.Random.Range(0, nowQner.wrondReact.Length);
+            StartCoroutine(TypeText(qT, nowQner.wrondReact[r]));
+
+            StartCoroutine(HpDown());
+        }
+
+        for (int i = 0; i < answerTransform.childCount; i++)
+        {
+            Destroy(answerTransform.GetChild(i).gameObject);
+        }
+
+        StartCoroutine(QEnd());
+    }
+
+    IEnumerator HpDown()
+    {
+        hp--;
+
+        GameObject targetobj = hpTransform.GetChild(2 - hp).Find("Image").gameObject;
+        targetobj.SetActive(true);
+        RectTransform target = targetobj.GetComponent<RectTransform>();
+        target.sizeDelta = new Vector2(10, 0);
+
+        while (target.sizeDelta.y < 100)
+        {
+            target.sizeDelta = new Vector2(10, target.sizeDelta.y + 120 * Time.deltaTime);
+            yield return null;
+        }
+
+        target.sizeDelta = new Vector2(10, 100);
+    }
+
+    IEnumerator QEnd()
+    {
+        timerT.gameObject.SetActive(false);
+        yield return new WaitForSeconds(3f);
+
+        StartCoroutine(MovingAnimation(qner.GetComponent<RectTransform>(), new Vector2(0, -850)));
+
+        float r = UnityEngine.Random.Range(3f, 5f);
+        yield return new WaitForSeconds(r);
+
+        qner.SetActive(false);
+        isquestionSet = false;
     }
 }

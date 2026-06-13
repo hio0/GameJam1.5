@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da516697f51a46746bff170c83f81e65, type: 3}
+  m_Name: Limbungi
+  m_EditorClassIdentifier: 
+  qnerName: "\uB9BC\uBD80\uC774"
+  qnerImage: {fileID: -707184899, guid: 7a4d51e0b02d155479674d6c285c080b, type: 3}
+  myQuestion:
+  - {fileID: 11400000, guid: bc03df4cd9645754092fbb949432919d, type: 2}
+  correctReact:
+  - "\uC774-\uC0C1\uC801\uC774\uAD6C\uB8CC..."
+  wrondReact:
+  - "\uBBF8\uCCE4\uB098 \uBCF4\uAD70."
+  - "\uB124 \uD0D3\uC774\uAD70, \uD604\uC790!"

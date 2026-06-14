@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71f259536c2b3d40818a7479533145f, type: 3}
+  m_Name: Iggi_1
+  m_EditorClassIdentifier: 
+  text: "<b>\uC774\uB07C\uC5D0 \uB300\uD558\uC5EC.</b>\n\uC774\uB07C\uB294, \uAC00\uD788
+    \uC2E0\uC774 \uCC3D\uC870\uD55C <u>\uC804\uC9C0 \uC804\uB2A5\uC758 \uBB3C\uC9C8</u>\uC774\uB77C
+    \uD560 \uC218 \uC788\uB2E4.\n\n\uADF8 \uC911\uC5D0\uC11C\uB3C4, \uC774\uB07C\uB294
+    \uCD1D 3\uAC00\uC9C0\uC758 \uB4F1\uAE09\uC73C\uB85C \uB098\uB258\uC5B4\uC9C4\uB2E4.
+    <u>\uBAA8\uB4E0 \uC774\uB07C\uB294 \uC18C\uC911\uD558\uC9C0\uB9CC,</u> \uADF8
+    \uC911\uC5D0\uC11C\uB3C4 \uACE0\uB4F1\uAE09\uC778 \uC774\uB07C\uB294 \uAC00\uD788
+    \uC22D\uBC30\uBC1B\uC544 \uB9C8\uB545\uD560 \uC778\uB958\uC758 \uC9C0\uBC30\uC790\uC640
+    \uAC19\uC740 \uC704\uCE58\uC5D0 \uC62C\uB77C\uC120\uB2E4.\n\n- <b><size=40>\uC774\uB07E\uB07C</b></size><i>iggiggi</i>\n\uAC00\uC7A5
+    \uB9CE\uC740 \uC774\uB07C\uB4E4\uC774 \uD3C9\uAC00\uB418\uB294 \uD3C9\uBC94\uD55C
+    \uB4F1\uAE09\uC73C\uB85C, \uADF8\uB7FC\uC5D0\uB3C4 \uC774\uB07C\uB294 \uC774\uB07C\uC774\uAE30\uC5D0
+    \uB9E4\uC6B0 \uAC15\uB825\uD55C \uD798\uC744 \uBC1C\uD718\uD55C\uB2E4."

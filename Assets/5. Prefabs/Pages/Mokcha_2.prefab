@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7590250758442744162}
   m_Layer: 5
-  m_Name: Mokcha
+  m_Name: Mokcha_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

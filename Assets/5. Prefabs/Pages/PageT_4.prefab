@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9039508712047074680}
   - component: {fileID: 2725037287343771105}
   m_Layer: 5
-  m_Name: PageT
+  m_Name: PageT_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\n\uB07E"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02d35c79a6639764f91a48b39ae4355a, type: 2}
   m_sharedMaterial: {fileID: 4507231753285863310, guid: 02d35c79a6639764f91a48b39ae4355a, type: 2}

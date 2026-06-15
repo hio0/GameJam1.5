@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Book : MonoBehaviour
 {
+    public static Book book;
+
     public GameObject[] pages;
     int nowpage;
     int page;
@@ -18,6 +20,7 @@ public class Book : MonoBehaviour
     public TMP_Text B_PT;
 
     public GameObject pageC;
+    public Transform C_content;
     public TMP_Text C_PT;
 
     public float moveAmount = 300f;
@@ -28,6 +31,18 @@ public class Book : MonoBehaviour
     public TMP_Text pre_pageT;
     public GameObject pre_mokchaA;
     public GameObject pre_mokchaB;
+
+    private void Awake()
+    {
+        if (book == null)
+        {
+            book = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private void OnEnable()
     {
@@ -52,11 +67,33 @@ public class Book : MonoBehaviour
 
     void SetP(TMP_Text text, string much)
     {
-        text.text = $"P.{much} | 이끼";
+        string part = null;
+        if (nowpage < 2)
+        {
+            part = "목차";
+        }
+        else if (nowpage < 6)
+        {
+            part = "이끼";
+        }
+        else if (nowpage < 12)
+        {
+            part = "림버스";
+        }
+
+        text.text = $"P.{much} | {part}";
     }
 
     void ClearPage()
     {
+        if (A_content.childCount > 0 || B_content.childCount > 0 || C_content.childCount > 0)
+        {
+            Destroy(A_content.GetChild(0).gameObject);
+            Destroy(B_content.GetChild(0).gameObject);
+            Destroy(C_content.GetChild(0).gameObject);
+        }
+
+        /*
         for(int i  = 0; i < A_content.childCount; i++)
         {
             Destroy(A_content.GetChild(i));
@@ -66,19 +103,29 @@ public class Book : MonoBehaviour
         {
             Destroy(B_content.GetChild(i));
         }
+
+        for (int i = 0; i < C_content.childCount; i++)
+        {
+            Destroy(C_content.GetChild(i));
+        }
+        */
     }
 
     public void SetMokcha()
     {
         ClearPage();
-        
-        Instantiate(pre_mokchaA, A_content);
-        
+
+        nowpage = 0;
+        Instantiate(pages[nowpage], A_content);
+        Instantiate(pages[nowpage + 1], A_content);
+
+        SetP(A_PT, 1.ToString());
+        SetP(B_PT, 2.ToString());
     }
 
     public void WarpToPageNum(int page)
     {
-
+        nowpage = page - 1;
         FlipPage(true);
     }
 
@@ -114,10 +161,13 @@ public class Book : MonoBehaviour
             {
                 ClearPage();
 
-                Instantiate(pages[nowpage], A_content);
-                int a = nowpage + 1;
-                SetP(A_PT, a.ToString());
-                Instantiate(pages[nowpage + 1], B_content);
+                Instantiate(pages[nowpage], B_content);
+                int b = nowpage + 1;
+                SetP(B_PT, b.ToString());
+
+                Instantiate(pages[nowpage + 1], C_content);
+                int c = nowpage + 2;
+                SetP(C_PT, c.ToString());
                 nowpage++;
 
                 /*

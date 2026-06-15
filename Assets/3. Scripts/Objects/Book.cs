@@ -5,21 +5,19 @@ using UnityEngine;
 
 public class Book : MonoBehaviour
 {
-    public Page[] pages;
+    public GameObject[] pages;
     int nowpage;
+    int page;
 
     public RectTransform pageA;
     public Transform A_content;
-    public TMP_Text A_Text;
     public TMP_Text A_PT;
 
     public RectTransform pageB;
     public Transform B_content;
-    public TMP_Text B_Text;
     public TMP_Text B_PT;
 
     public GameObject pageC;
-    public TMP_Text C_Text;
     public TMP_Text C_PT;
 
     public float moveAmount = 300f;
@@ -27,6 +25,7 @@ public class Book : MonoBehaviour
 
     bool isFlipping = false;
 
+    public TMP_Text pre_pageT;
     public GameObject pre_mokchaA;
     public GameObject pre_mokchaB;
 
@@ -51,21 +50,36 @@ public class Book : MonoBehaviour
         }
     }
 
-    void SetP(TMP_Text text, string much, string part)
+    void SetP(TMP_Text text, string much)
     {
-        text.text = $"P.{much}|{part}";
+        text.text = $"P.{much} | 이끼";
+    }
+
+    void ClearPage()
+    {
+        for(int i  = 0; i < A_content.childCount; i++)
+        {
+            Destroy(A_content.GetChild(i));
+        }
+
+        for (int i = 0; i < B_content.childCount; i++)
+        {
+            Destroy(B_content.GetChild(i));
+        }
     }
 
     public void SetMokcha()
     {
-        A_Text.text = null;
-        B_Text.text = null;
-        C_Text.text = null;
+        ClearPage();
+        
+        Instantiate(pre_mokchaA, A_content);
+        
+    }
 
-        if (A_content.childCount == 0)
-        {
-            Instantiate(pre_mokchaA, A_content);
-        }
+    public void WarpToPageNum(int page)
+    {
+
+        FlipPage(true);
     }
 
     IEnumerator FlipPage(bool forward)
@@ -92,12 +106,29 @@ public class Book : MonoBehaviour
         {
             vec = new Vector2(320f, -72.5f);
 
-            if (nowpage + 1 > pages.Length)
+            if (nowpage >= pages.Length)
             {
                 StopAllCoroutines();
             }
             else
             {
+                ClearPage();
+
+                Instantiate(pages[nowpage], A_content);
+                int a = nowpage + 1;
+                SetP(A_PT, a.ToString());
+                Instantiate(pages[nowpage + 1], B_content);
+                nowpage++;
+
+                /*
+                string b_part = null;
+                string c_part = null;
+
+                int b = 0;
+                int c = 0;
+
+
+                
                 A_Text.text = B_Text.text;
 
                 if (nowpage == 0)
@@ -106,31 +137,42 @@ public class Book : MonoBehaviour
 
                     B_Text.text = pages[nowpage].text;
                     C_Text.text = pages[nowpage + 1].text;
+
+                    b_part = pages[nowpage].part;
+                    c_part = pages[nowpage + 1].part;
+
+                    b = nowpage + 3;
+                    c = nowpage + 4;
                 }
                 else
                 {
                     if (nowpage + 1 >= pages.Length)
                     {
-                        StopAllCoroutines();
+                        
                     }
                     else
                     {
                         B_Text.text = pages[nowpage + 1].text;
+                        b_part = pages[nowpage + 1].part;
+                        b = nowpage + 4;
                     }
                     if (nowpage + 2 >= pages.Length)
                     {
                         pageC.SetActive(false);
-                        StopAllCoroutines();
                     }
                     else
                     {
                         pageC.SetActive(true);
                         C_Text.text = pages[nowpage + 2].text;
+                        c_part = pages[nowpage + 2].part;
+                        c = nowpage + 5;
                     }
                 }
 
-                nowpage++;
+                SetP(B_PT, b.ToString(), b_part);
+                SetP(C_PT, c.ToString(), c_part);
 
+                nowpage++;
             }
         }
         else
@@ -148,10 +190,13 @@ public class Book : MonoBehaviour
                 SetMokcha();
             }
         }
-        pageA.anchoredPosition = vec;
+                */
+            }
+            pageA.anchoredPosition = vec;
 
-        ApplyFlip(end, forward);
-        isFlipping = false;
+            ApplyFlip(end, forward);
+            isFlipping = false;
+        }
     }
 
     void ApplyFlip(float t, bool forward)

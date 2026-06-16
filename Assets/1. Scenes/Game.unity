@@ -225,7 +225,7 @@ MonoBehaviour:
   pageB: {fileID: 891770162}
   B_content: {fileID: 1124851633}
   B_PT: {fileID: 1574407465}
-  pageC: {fileID: 1092543426362342932}
+  pageC: {fileID: 6024902302501422958}
   C_content: {fileID: 1974643118}
   C_PT: {fileID: 224357423825311177}
   moveAmount: 300

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class Book : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class Book : MonoBehaviour
     public Transform B_content;
     public TMP_Text B_PT;
 
-    public GameObject pageC;
+    public RectTransform pageC;
     public Transform C_content;
     public TMP_Text C_PT;
 
@@ -81,17 +82,38 @@ public class Book : MonoBehaviour
             part = "림버스";
         }
 
-        text.text = $"P.{much} | {part}";
+        int m = int.Parse(much) + 1;
+
+        text.text = $"P.{m} | {part}";
     }
 
-    void ClearPage()
+    void ClearPage(string who)
     {
-        if (A_content.childCount > 0 || B_content.childCount > 0 || C_content.childCount > 0)
+        if (who == "A" || who == "ALL")
         {
-            Destroy(A_content.GetChild(0).gameObject);
-            Destroy(B_content.GetChild(0).gameObject);
-            Destroy(C_content.GetChild(0).gameObject);
+            if(A_content.childCount > 0)
+            {
+                Destroy(A_content.GetChild(0).gameObject);
+            }
         }
+
+        if(who == "B" || who == "ALL")
+        {
+            if(B_content.childCount > 0)
+            {
+                Destroy(B_content.GetChild(0).gameObject);
+            }
+        }
+
+        if(who == "C" || who == "ALL")
+        {
+            if(C_content.childCount > 0)
+            {
+                Destroy(C_content.GetChild(0).gameObject);
+            }
+        }
+
+
 
         /*
         for(int i  = 0; i < A_content.childCount; i++)
@@ -111,16 +133,46 @@ public class Book : MonoBehaviour
         */
     }
 
+    void SetPage(string alptha)
+    {
+        RectTransform me = null;
+        TMP_Text pt = null;
+        Transform con = null;
+
+        if (alptha == "A")
+        {
+            me = pageA;
+            pt = A_PT;
+            con = A_content;
+        }
+        if (alptha == "B")
+        {
+            me = pageB;
+            pt = B_PT;
+            con = B_content;
+        }
+        if (alptha == "C")
+        {
+            me = pageC;
+            pt = C_PT;
+            con = C_content;
+        }
+
+        ++nowpage;
+        Instantiate(pages[nowpage], con);
+        SetP(pt, nowpage.ToString());
+    }
+
     public void SetMokcha()
     {
-        ClearPage();
+        ClearPage("ALL");
 
         nowpage = 0;
-        Instantiate(pages[nowpage], A_content);
-        Instantiate(pages[nowpage + 1], A_content);
 
-        SetP(A_PT, 1.ToString());
-        SetP(B_PT, 2.ToString());
+        Instantiate(pages[nowpage], A_content);
+        SetP(A_PT, nowpage.ToString());
+
+        SetPage("B");
     }
 
     public void WarpToPageNum(int page)
@@ -159,16 +211,11 @@ public class Book : MonoBehaviour
             }
             else
             {
-                ClearPage();
+                ClearPage("B");
+                ClearPage("C");
 
-                Instantiate(pages[nowpage], B_content);
-                int b = nowpage + 1;
-                SetP(B_PT, b.ToString());
-
-                Instantiate(pages[nowpage + 1], C_content);
-                int c = nowpage + 2;
-                SetP(C_PT, c.ToString());
-                nowpage++;
+                SetPage("B");
+                SetPage("C");
 
                 /*
                 string b_part = null;

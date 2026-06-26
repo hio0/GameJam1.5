@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEditor.Search;
@@ -25,6 +26,10 @@ public class GameManager : MonoBehaviour
     public Action qset;
     public Qner[] dayqner;
     public string[] randomName;
+    public Transform stars;
+
+    public int mystar;
+    public TMP_Text starT;
 
     public TMP_Text timerT;
     [SerializeField] float timer;
@@ -67,6 +72,8 @@ public class GameManager : MonoBehaviour
     {
         Qcount = 0;
         hp = 3;
+        mystar = 0;
+        starT.text = $"x {mystar.ToString()}";
 
         qner.SetActive(false);
         isquestionSet = false;
@@ -127,7 +134,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        QcountT.text = Qcount.ToString() + $"<size=80>{a}</size>";
+        QcountT.text = Qcount.ToString() + $"<size=40>{a}</size>";
 
         qset = null;
         SetQner();
@@ -166,6 +173,11 @@ public class GameManager : MonoBehaviour
         bool iscorrectset = false;
         List<string> list = new List<string>();
         list.Clear();
+        for (int i = 0; i < stars.childCount; i++)
+        {
+            Color32 col = new Color32(104, 91, 71, 255);
+            stars.GetChild(i).GetComponent<Image>().color = col;
+        }
 
         // Question 세팅
         if (!qnerIsTekbeul)
@@ -174,6 +186,12 @@ public class GameManager : MonoBehaviour
             nowQ = questions[r];
         }
 
+        int star = nowQ.star;
+        for (int i = 0; i < star; i++)
+        {
+            Color32 col = new Color32(159, 147, 130, 255);
+            stars.GetChild(i).GetComponent<Image>().color = col;
+        }
         StartCoroutine(TypeText(qT, nowQ.Qtext));
         StartCoroutine(TimerOn());
 
@@ -295,6 +313,8 @@ public class GameManager : MonoBehaviour
         {
             r = UnityEngine.Random.Range(0, nowQner.correctReact.Length);
             StartCoroutine(TypeText(qT, nowQner.correctReact[r]));
+
+            StarChanged(nowQ.star, true);
         }
         else
         {
@@ -342,5 +362,24 @@ public class GameManager : MonoBehaviour
 
         qner.SetActive(false);
         isquestionSet = false;
+    }
+
+    void StarChanged(int changed, bool isplus)
+    {
+        if(isplus)
+        {
+            mystar += changed;
+        }
+        else
+        {
+            mystar -= changed;
+        }
+
+        starT.text = $"<size=30>x</size> {mystar.ToString()}";
+    }
+
+    IEnumerator StarChangeAnimation(int changed)
+    {
+        yield return null;
     }
 }

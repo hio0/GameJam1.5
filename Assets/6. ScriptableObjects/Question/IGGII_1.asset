@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Qtext: "\uC774\uB07C \uC911 \uAC00\uC7A5 \uCD5C\uC0C1\uC758 \uD488\uC9C8\uC758
     \uC774\uB07C\uB294 \uBB34\uC5C7\uC774\uB77C \uBD80\uB97C\uAE4C\uC694?"
+  star: 3
   answer: "\uCD5C\uC0C1\uAE09 \uC774\uB07C"
   wrongAnswer:
   - "\uC774\uB07E\uB07C"

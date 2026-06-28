@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
 
     public int mystar;
     public TMP_Text starT;
+    public TMP_Text plusstarT;
 
     public TMP_Text timerT;
     [SerializeField] float timer;
@@ -73,7 +74,9 @@ public class GameManager : MonoBehaviour
         Qcount = 0;
         hp = 3;
         mystar = 0;
+
         starT.text = $"x {mystar.ToString()}";
+        plusstarT.gameObject.SetActive(false);
 
         qner.SetActive(false);
         isquestionSet = false;
@@ -113,7 +116,7 @@ public class GameManager : MonoBehaviour
 
         qner.SetActive(true);
         qner.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -850);
-        StartCoroutine(MovingAnimation(qner.GetComponent<RectTransform>(), new Vector2(0, 0)));
+        StartCoroutine(MovingAnimation(qner.GetComponent<RectTransform>(), new Vector2(0, 0), 3));
 
         Qcount++;
 
@@ -255,19 +258,19 @@ public class GameManager : MonoBehaviour
         anser.localRotation = Quaternion.Euler(0, 0, r);
 
         Vector2 target = new Vector2(722, 171);
-        StartCoroutine(MovingAnimation(anser, target));
+        StartCoroutine(MovingAnimation(anser, target, 3));
 
         yield return new WaitForSeconds(1f);
 
-        StartCoroutine(MovingAnimation(answers, new Vector2(626f, answers.localPosition.y)));
+        StartCoroutine(MovingAnimation(answers, new Vector2(626f, answers.localPosition.y), 3));
     }
 
-    IEnumerator MovingAnimation(RectTransform what, Vector2 target)
+    IEnumerator MovingAnimation(RectTransform what, Vector2 target, float speed)
     {
         while (what.anchoredPosition != target)
         {
-            float x = Mathf.Lerp(what.anchoredPosition.x, target.x, Time.deltaTime * 3);
-            float y = Mathf.Lerp(what.anchoredPosition.y, target.y, Time.deltaTime * 3);
+            float x = Mathf.Lerp(what.anchoredPosition.x, target.x, Time.deltaTime * speed);
+            float y = Mathf.Lerp(what.anchoredPosition.y, target.y, Time.deltaTime * speed);
 
             what.anchoredPosition = new Vector2(x, y);
             yield return null;
@@ -305,8 +308,8 @@ public class GameManager : MonoBehaviour
     public void Answerd(bool iscorrected)
     {
         StopAllCoroutines();
-        StartCoroutine(MovingAnimation(anser, new Vector2(2250, 171)));
-        StartCoroutine(MovingAnimation(answers, new Vector2(1325f, 393)));
+        StartCoroutine(MovingAnimation(anser, new Vector2(2250, 171), 3));
+        StartCoroutine(MovingAnimation(answers, new Vector2(1325f, 393), 3));
         int r = 0;
 
         if (iscorrected)
@@ -314,7 +317,7 @@ public class GameManager : MonoBehaviour
             r = UnityEngine.Random.Range(0, nowQner.correctReact.Length);
             StartCoroutine(TypeText(qT, nowQner.correctReact[r]));
 
-            StarChanged(nowQ.star, true);
+            StarChanged(nowQ.star);
         }
         else
         {
@@ -355,7 +358,7 @@ public class GameManager : MonoBehaviour
         timerT.gameObject.SetActive(false);
         yield return new WaitForSeconds(3f);
 
-        StartCoroutine(MovingAnimation(qner.GetComponent<RectTransform>(), new Vector2(0, -850)));
+        StartCoroutine(MovingAnimation(qner.GetComponent<RectTransform>(), new Vector2(0, -850), 3));
 
         float r = UnityEngine.Random.Range(3f, 5f);
         yield return new WaitForSeconds(r);
@@ -364,22 +367,47 @@ public class GameManager : MonoBehaviour
         isquestionSet = false;
     }
 
-    void StarChanged(int changed, bool isplus)
+    void StarChanged(int changed)
     {
-        if(isplus)
-        {
-            mystar += changed;
-        }
-        else
-        {
-            mystar -= changed;
-        }
+        mystar += changed;
+        StartCoroutine(StarChangeAnimation(changed));
 
         starT.text = $"<size=30>x</size> {mystar.ToString()}";
     }
 
     IEnumerator StarChangeAnimation(int changed)
     {
-        yield return null;
+        plusstarT.gameObject.SetActive(true);
+
+        if(changed >= 0)
+        {
+            plusstarT.text = $"+{changed}";
+        }
+        else
+        {
+            plusstarT.text = $"{ changed}";
+        }
+
+        CanvasGroup can = plusstarT.gameObject.GetComponent<CanvasGroup>();
+        RectTransform rec = plusstarT.gameObject.GetComponent<RectTransform>();
+
+        float time = 0f;
+        float fadeout = 1.5f;
+
+        can.alpha = 1f;
+
+        rec.anchoredPosition = new Vector2(-43.59f, rec.anchoredPosition.y);
+        StartCoroutine(MovingAnimation(rec, Vector2.up, 1.5f));
+
+        while (time < fadeout)
+        {
+            time += Time.deltaTime;
+            can.alpha = Mathf.Lerp(1f, 0f, time / fadeout);
+
+            yield return null;
+        }
+
+        can.alpha = 0f;
+        plusstarT.gameObject.SetActive(false);
     }
 }

@@ -45,28 +45,27 @@ public class Book : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    private void Start()
     {
         SetMokcha();
-        nowpage = 0;
     }
 
     void Update()
     {
         if (!isFlipping)
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D) && (nowpage + 1) * 2 + 1 < pages.Length)
             {
                 StartCoroutine(FlipPage(true));
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.A) && nowpage > 0)
             {
                 StartCoroutine(FlipPage(false));
             }
         }
     }
 
-    void SetP(TMP_Text text, string much)
+    void SetP(TMP_Text text, int num)
     {
         string part = null;
         if (nowpage < 2)
@@ -82,103 +81,83 @@ public class Book : MonoBehaviour
             part = "림버스";
         }
 
-        int m = int.Parse(much) + 1;
-
-        text.text = $"P.{m} | {part}";
+        text.text = $"P.{num + 1} | {part}";
     }
 
-    void ClearPage(string who)
+    void ClearPage()
     {
-        if (who == "A" || who == "ALL")
+        if (A_content.childCount > 0)
         {
-            if(A_content.childCount > 0)
-            {
-                Destroy(A_content.GetChild(0).gameObject);
-            }
+            Destroy(A_content.GetChild(0).gameObject);
         }
 
-        if(who == "B" || who == "ALL")
+        if (B_content.childCount > 0)
         {
-            if(B_content.childCount > 0)
-            {
-                Destroy(B_content.GetChild(0).gameObject);
-            }
+            Destroy(B_content.GetChild(0).gameObject);
         }
 
-        if(who == "C" || who == "ALL")
+        if (C_content.childCount > 0)
         {
-            if(C_content.childCount > 0)
-            {
-                Destroy(C_content.GetChild(0).gameObject);
-            }
+            Destroy(C_content.GetChild(0).gameObject);
         }
-
-
-
-        /*
-        for(int i  = 0; i < A_content.childCount; i++)
-        {
-            Destroy(A_content.GetChild(i));
-        }
-
-        for (int i = 0; i < B_content.childCount; i++)
-        {
-            Destroy(B_content.GetChild(i));
-        }
-
-        for (int i = 0; i < C_content.childCount; i++)
-        {
-            Destroy(C_content.GetChild(i));
-        }
-        */
     }
 
-    void SetPage(string alptha)
+    void SetPage(bool isplus)
     {
-        RectTransform me = null;
         TMP_Text pt = null;
         Transform con = null;
 
-        if (alptha == "A")
+        if(isplus)
         {
-            me = pageA;
-            pt = A_PT;
-            con = A_content;
-        }
-        if (alptha == "B")
-        {
-            me = pageB;
+            nowpage *= 2;
             pt = B_PT;
             con = B_content;
-        }
-        if (alptha == "C")
-        {
-            me = pageC;
+            Instantiate(pages[nowpage], con);
+            SetP(pt, nowpage);
+
+            nowpage *= 2 + 1;
             pt = C_PT;
             con = C_content;
+            Instantiate(pages[nowpage], con);
+            SetP(pt, nowpage);
         }
+        else
+        {
+            nowpage *= 2;
+            pt = A_PT;
+            con = A_content;
+            Instantiate(pages[nowpage], con);
+            SetP(pt, nowpage);
 
-        ++nowpage;
-        Instantiate(pages[nowpage], con);
-        SetP(pt, nowpage.ToString());
+            nowpage *= 2 + 1;
+            pt = B_PT;
+            con = B_content;
+            Instantiate(pages[nowpage], con);
+            SetP(pt, nowpage);
+        }
     }
 
     public void SetMokcha()
     {
-        ClearPage("ALL");
+        ClearPage();
 
         nowpage = 0;
 
+        SetPage(true);
         Instantiate(pages[nowpage], A_content);
-        SetP(A_PT, nowpage.ToString());
-
-        SetPage("B");
+        SetP(A_PT, nowpage);
     }
 
     public void WarpToPageNum(int page)
     {
-        nowpage = page - 1;
-        FlipPage(true);
+        bool ifsf = false;
+        if(page >= nowpage)
+        {
+           ifsf = true;
+        }
+
+        nowpage = page;
+        FlipPage(ifsf);
     }
 
     IEnumerator FlipPage(bool forward)
@@ -201,99 +180,24 @@ public class Book : MonoBehaviour
         }
 
         Vector2 vec = Vector2.zero;
+
+        ClearPage();
         if (forward)
         {
-            vec = new Vector2(320f, -72.5f);
+            nowpage++;
 
-            if (nowpage >= pages.Length)
-            {
-                StopAllCoroutines();
-            }
-            else
-            {
-                ClearPage("B");
-                ClearPage("C");
-
-                SetPage("B");
-                SetPage("C");
-
-                /*
-                string b_part = null;
-                string c_part = null;
-
-                int b = 0;
-                int c = 0;
-
-
-                
-                A_Text.text = B_Text.text;
-
-                if (nowpage == 0)
-                {
-                    Destroy(A_content.transform.GetChild(0).gameObject);
-
-                    B_Text.text = pages[nowpage].text;
-                    C_Text.text = pages[nowpage + 1].text;
-
-                    b_part = pages[nowpage].part;
-                    c_part = pages[nowpage + 1].part;
-
-                    b = nowpage + 3;
-                    c = nowpage + 4;
-                }
-                else
-                {
-                    if (nowpage + 1 >= pages.Length)
-                    {
-                        
-                    }
-                    else
-                    {
-                        B_Text.text = pages[nowpage + 1].text;
-                        b_part = pages[nowpage + 1].part;
-                        b = nowpage + 4;
-                    }
-                    if (nowpage + 2 >= pages.Length)
-                    {
-                        pageC.SetActive(false);
-                    }
-                    else
-                    {
-                        pageC.SetActive(true);
-                        C_Text.text = pages[nowpage + 2].text;
-                        c_part = pages[nowpage + 2].part;
-                        c = nowpage + 5;
-                    }
-                }
-
-                SetP(B_PT, b.ToString(), b_part);
-                SetP(C_PT, c.ToString(), c_part);
-
-                nowpage++;
-            }
+            SetPage(true);
         }
         else
         {
-            vec = new Vector2(-320f, -72.5f);
-
-            pageC.SetActive(true);
             nowpage--;
 
-            C_Text.text = B_Text.text;
-
-            B_Text.text = pages[nowpage].text;
-            if (nowpage == 0)
-            {
-                SetMokcha();
-            }
+            SetPage(false);
         }
-                */
-            }
-            pageA.anchoredPosition = vec;
+        pageA.anchoredPosition = new Vector2(320f, -72.5f);
 
-            ApplyFlip(end, forward);
-            isFlipping = false;
-        }
+        ApplyFlip(end, true);
+        isFlipping = false;
     }
 
     void ApplyFlip(float t, bool forward)

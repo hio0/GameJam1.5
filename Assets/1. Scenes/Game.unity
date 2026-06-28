@@ -140,7 +140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &59951175
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4593,6 +4593,7 @@ GameObject:
   - component: {fileID: 1079449067}
   - component: {fileID: 1079449069}
   - component: {fileID: 1079449068}
+  - component: {fileID: 1079449070}
   m_Layer: 5
   m_Name: StarChanged
   m_TagString: Untagged
@@ -4648,8 +4649,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4286747551
+  m_fontColor: {r: 0.62352943, g: 0.5764706, b: 0.50980395, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4716,6 +4717,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1079449066}
   m_CullTransparentMesh: 1
+--- !u!225 &1079449070
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079449066}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1124851632
 GameObject:
   m_ObjectHideFlags: 0
@@ -6368,6 +6381,7 @@ MonoBehaviour:
   stars: {fileID: 799366042}
   mystar: 0
   starT: {fileID: 77402210}
+  plusstarT: {fileID: 1079449068}
   timerT: {fileID: 825940633}
   timer: 0
   anser: {fileID: 154504064}

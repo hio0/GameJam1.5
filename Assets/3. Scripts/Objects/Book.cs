@@ -102,39 +102,24 @@ public class Book : MonoBehaviour
         }
     }
 
-    void SetPage(bool isplus)
+    void SetPage()
     {
         TMP_Text pt = null;
         Transform con = null;
 
-        if(isplus)
-        {
-            nowpage *= 2;
-            pt = B_PT;
-            con = B_content;
-            Instantiate(pages[nowpage], con);
-            SetP(pt, nowpage);
+        int pageindex = 0;
 
-            nowpage *= 2 + 1;
-            pt = C_PT;
-            con = C_content;
-            Instantiate(pages[nowpage], con);
-            SetP(pt, nowpage);
-        }
-        else
-        {
-            nowpage *= 2;
-            pt = A_PT;
-            con = A_content;
-            Instantiate(pages[nowpage], con);
-            SetP(pt, nowpage);
+        pageindex = nowpage * 2;
+        pt = B_PT;
+        con = B_content;
+        Instantiate(pages[pageindex], con);
+        SetP(pt, pageindex);
 
-            nowpage *= 2 + 1;
-            pt = B_PT;
-            con = B_content;
-            Instantiate(pages[nowpage], con);
-            SetP(pt, nowpage);
-        }
+        pageindex = nowpage * 2 + 1;
+        pt = C_PT;
+        con = C_content;
+        Instantiate(pages[pageindex], con);
+        SetP(pt, pageindex);
     }
 
     public void SetMokcha()
@@ -143,17 +128,15 @@ public class Book : MonoBehaviour
 
         nowpage = 0;
 
-        SetPage(true);
-        Instantiate(pages[nowpage], A_content);
-        SetP(A_PT, nowpage);
+        SetPage();
     }
 
     public void WarpToPageNum(int page)
     {
         bool ifsf = false;
-        if(page >= nowpage)
+        if (page >= nowpage)
         {
-           ifsf = true;
+            ifsf = true;
         }
 
         nowpage = page;
@@ -185,15 +168,12 @@ public class Book : MonoBehaviour
         if (forward)
         {
             nowpage++;
-
-            SetPage(true);
         }
         else
         {
             nowpage--;
-
-            SetPage(false);
         }
+        SetPage();
         pageA.anchoredPosition = new Vector2(320f, -72.5f);
 
         ApplyFlip(end, true);

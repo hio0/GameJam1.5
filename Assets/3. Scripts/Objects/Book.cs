@@ -33,6 +33,9 @@ public class Book : MonoBehaviour
     public GameObject pre_mokchaA;
     public GameObject pre_mokchaB;
 
+    new AudioSource audio;
+    public AudioClip[] flipsounds;
+
     private void Awake()
     {
         if (book == null)
@@ -48,6 +51,16 @@ public class Book : MonoBehaviour
     private void Start()
     {
         SetMokcha();
+        audio = GetComponent<AudioSource>();
+
+        SoundManager.playsound.Volumed(SoundManager.playsound.sound, 0.3f);
+        SoundManager.playsound.Volumed(SoundManager.playsound.bgm, 0.1f);
+    }
+
+    private void OnDisable()
+    {
+        SoundManager.playsound.Volumed(SoundManager.playsound.sound, 1f);
+        SoundManager.playsound.Volumed(SoundManager.playsound.bgm, 0.3f);
     }
 
     void Update()
@@ -145,6 +158,11 @@ public class Book : MonoBehaviour
 
     IEnumerator FlipPage(bool forward)
     {
+        int r = Random.Range(0, 3);
+        AudioClip clip = flipsounds[r];
+        audio.clip = clip;
+        audio.Play();
+
         isFlipping = true;
 
         float time = 0f;

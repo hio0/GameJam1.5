@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +20,7 @@ public class MainManager : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("Game");
+        StartCoroutine(SceneMovedObject.instance.MovedAndLoadScene(false, "Loading"));
     }
 
     public void EndGame()

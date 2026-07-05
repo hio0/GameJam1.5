@@ -10,6 +10,7 @@ public class AnswerButton : MonoBehaviour
 {
     public TMP_Text text;
     public Action onclick;
+    public AudioClip huoguaum;
    
     // Start is called before the first frame update
     void Start()
@@ -26,5 +27,13 @@ public class AnswerButton : MonoBehaviour
     void OnClick()
     {
         onclick?.Invoke();
+    }
+
+    public void AudioPlay()
+    {
+        AudioSource audioSource = GetComponent<AudioSource>();
+
+        audioSource.clip = huoguaum;
+        audioSource.Play();
     }
 }

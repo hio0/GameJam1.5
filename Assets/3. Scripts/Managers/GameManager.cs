@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public Image qnerImage;
     Qner nowQner;
     bool qnerIsTekbeul;
-    int Qcount;
+    public int Qcount;
     public TMP_Text QcountT;
     public Question[] questions;
     public Question nowQ;
@@ -43,8 +43,10 @@ public class GameManager : MonoBehaviour
 
     public Transform hpTransform;
     int hp;
+    public GameObject gameoverP;
 
     bool isquestionSet;
+    bool isgameover;
 
     private void Awake()
     {
@@ -54,13 +56,17 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SceneMovedObject.instance.Moved(true);
         ResetGame();
+
+        SoundManager.playsound.Looped(SoundManager.playsound.bgm, true);
+        SoundManager.playsound.BGMPlay(SoundManager.playsound.soundClip);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isquestionSet)
+        if (!isquestionSet && !isgameover)
         {
             time = UnityEngine.Random.Range(30, 51);
 
@@ -80,6 +86,8 @@ public class GameManager : MonoBehaviour
 
         qner.SetActive(false);
         isquestionSet = false;
+        gameoverP.SetActive(false);
+        isgameover = false;
     }
 
     IEnumerator TimerOn()
@@ -106,7 +114,7 @@ public class GameManager : MonoBehaviour
 
         if (timer <= 0)
         {
-            Answerd(false);
+            StartCoroutine(Answerd(false));
         }
     }
 
@@ -142,6 +150,7 @@ public class GameManager : MonoBehaviour
         qset = null;
         SetQner();
         qset?.Invoke();
+        SoundManager.playsound.SoundEffectPlay(SoundManager.playsound.nextqner);
     }
 
     void SetQner()
@@ -230,14 +239,14 @@ public class GameManager : MonoBehaviour
                 ans = nowQ.wrongAnswer[selectqnum];
                 Action act = null;
 
-                act = () => Answerd(false);
+                act = () => StartCoroutine(Answerd(false));
                 if (!iscorrectset)
                 {
                     if (isthatcorrect <= 34 || i == 2)
                     {
                         iscorrectset = true;
                         ans = nowQ.answer;
-                        act = () => Answerd(true);
+                        act = () => StartCoroutine(Answerd(false));
                     }
                 }
 
@@ -305,7 +314,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void Answerd(bool iscorrected)
+    public IEnumerator Answerd(bool iscorrected)
     {
         StopAllCoroutines();
         StartCoroutine(MovingAnimation(anser, new Vector2(2250, 171), 3));
@@ -318,6 +327,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(TypeText(qT, nowQner.correctReact[r]));
 
             StarChanged(nowQ.star);
+            SoundManager.playsound.SoundEffectPlay(SoundManager.playsound.correct);
         }
         else
         {
@@ -325,6 +335,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(TypeText(qT, nowQner.wrondReact[r]));
 
             StartCoroutine(HpDown());
+            SoundManager.playsound.SoundEffectPlay(SoundManager.playsound.wrong);
         }
 
         for (int i = 0; i < answerTransform.childCount; i++)
@@ -332,7 +343,12 @@ public class GameManager : MonoBehaviour
             Destroy(answerTransform.GetChild(i).gameObject);
         }
 
-        StartCoroutine(QEnd());
+        yield return StartCoroutine(QEnd());
+
+        if(hp <= 0)
+        {
+            GameOver();
+        }
     }
 
     IEnumerator HpDown()
@@ -385,7 +401,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            plusstarT.text = $"{ changed}";
+            plusstarT.text = $"{changed}";
         }
 
         CanvasGroup can = plusstarT.gameObject.GetComponent<CanvasGroup>();
@@ -396,8 +412,8 @@ public class GameManager : MonoBehaviour
 
         can.alpha = 1f;
 
-        rec.anchoredPosition = new Vector2(-43.59f, rec.anchoredPosition.y);
-        StartCoroutine(MovingAnimation(rec, Vector2.up, 1.5f));
+        rec.anchoredPosition = new Vector2(114.8f, rec.anchoredPosition.y);
+        StartCoroutine(MovingAnimation(rec, new Vector2(170.88f, 0f), 1.5f));
 
         while (time < fadeout)
         {
@@ -409,5 +425,15 @@ public class GameManager : MonoBehaviour
 
         can.alpha = 0f;
         plusstarT.gameObject.SetActive(false);
+    }
+
+    void GameOver()
+    {
+        isgameover= true;
+
+        SoundManager.playsound.BGMPlay(null);
+        SoundManager.playsound.SoundEffectPlay(null);
+
+        gameoverP.SetActive(true);
     }
 }

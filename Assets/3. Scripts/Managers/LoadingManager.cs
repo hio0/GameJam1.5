@@ -9,6 +9,7 @@ public class LoadingManager : MonoBehaviour
 
     void Start()
     {
+        SoundManager.playsound.ShutUp();
         StartCoroutine(LoadScene());
     }
 

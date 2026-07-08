@@ -16,7 +16,6 @@ MonoBehaviour:
   star: 3
   answer: "\uB9E5\uC8FC!"
   wrongAnswer:
-  - "\uB9E5\u3145\uC8FC!"
-  - "\uAC8D\uC8FC!"
-  - "\uBA55\uC8FC!"
-  - "\uB9E5\uD06C\uB9AC!"
+  - "\uB9E5\uC8FC!"
+  - "\uB9E5\uC8FC!"
+  - "\uB9E5\uC8FC!"

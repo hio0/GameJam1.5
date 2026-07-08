@@ -60,4 +60,10 @@ public class SoundManager : MonoBehaviour
     {
         sound.PlayOneShot(audio);
     }
+
+    public void ShutUp()
+    {
+        sound.Stop();
+        bgm.Stop();
+    }
 }

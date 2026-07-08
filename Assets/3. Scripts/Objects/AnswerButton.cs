@@ -9,12 +9,13 @@ using UnityEngine.UI;
 public class AnswerButton : MonoBehaviour
 {
     public TMP_Text text;
-    public Action onclick;
+    public string myanswer;
     public AudioClip huoguaum;
    
     // Start is called before the first frame update
     void Start()
     {
+        text.text = myanswer;
         gameObject.GetComponent<Button>().onClick.AddListener(OnClick);
     }
 
@@ -26,7 +27,7 @@ public class AnswerButton : MonoBehaviour
 
     void OnClick()
     {
-        onclick?.Invoke();
+        StartCoroutine(GameManager.gm.Answerd(myanswer));
     }
 
     public void AudioPlay()

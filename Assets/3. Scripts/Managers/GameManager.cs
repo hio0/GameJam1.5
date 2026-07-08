@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
 
         if (timer <= 0)
         {
-            StartCoroutine(Answerd(false));
+            StartCoroutine(Answerd(null));
         }
     }
 
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
     void SetQ()
     {
         bool iscorrectset = false;
-        List<string> list = new List<string>();
+        List<int> list = new List<int>();
         list.Clear();
         for (int i = 0; i < stars.childCount; i++)
         {
@@ -223,7 +223,7 @@ public class GameManager : MonoBehaviour
                 selectqnum = UnityEngine.Random.Range(0, nowQ.wrongAnswer.Length);
                 isthatcorrect = UnityEngine.Random.Range(1, 101);
 
-                if (list.Count != 0 && list.Contains(nowQ.wrongAnswer[selectqnum]))
+                if (list.Count != 0 && list.Contains(selectqnum))
                 {
                     continue;
                 }
@@ -237,22 +237,18 @@ public class GameManager : MonoBehaviour
             if (!isimi)
             {
                 ans = nowQ.wrongAnswer[selectqnum];
-                Action act = null;
 
-                act = () => StartCoroutine(Answerd(false));
                 if (!iscorrectset)
                 {
                     if (isthatcorrect <= 34 || i == 2)
                     {
                         iscorrectset = true;
                         ans = nowQ.answer;
-                        act = () => StartCoroutine(Answerd(true));
                     }
                 }
 
-                b.GetComponent<AnswerButton>().text.text = ans;
-                b.GetComponent<AnswerButton>().onclick = act;
-                list.Add(ans);
+                b.GetComponent<AnswerButton>().myanswer = ans;
+                list.Add(selectqnum);
             }
         }
     }
@@ -314,12 +310,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public IEnumerator Answerd(bool iscorrected)
+    public IEnumerator Answerd(string answer)
     {
         StopAllCoroutines();
         StartCoroutine(MovingAnimation(anser, new Vector2(2250, 171), 3));
         StartCoroutine(MovingAnimation(answers, new Vector2(1325f, 393), 3));
         int r = 0;
+
+        bool iscorrected = false;
+        if(answer == nowQ.answer)
+        {
+            iscorrected = true;
+        }
 
         if (iscorrected)
         {

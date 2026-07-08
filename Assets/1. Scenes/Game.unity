@@ -4031,7 +4031,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -915.9, y: 0}
-  m_SizeDelta: {x: 6.2, y: 1532.33}
+  m_SizeDelta: {x: 6.2, y: 1135.61}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1287425405
 MonoBehaviour:
@@ -4181,7 +4181,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 915.9, y: 0}
-  m_SizeDelta: {x: 6.2, y: 1532.33}
+  m_SizeDelta: {x: 6.2, y: 1135.61}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1383100276
 MonoBehaviour:
@@ -4805,6 +4805,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 25a13ed47333e3f46ae0ed03076afb1b, type: 2}
   - {fileID: 11400000, guid: 847f53afbbdd5cd4ba4e28d37df61f01, type: 2}
   - {fileID: 11400000, guid: 5da246eb2994ebd4ba8d94fee1863c41, type: 2}
+  - {fileID: 11400000, guid: efd696df03b729f4f87010892b9e86b6, type: 2}
+  - {fileID: 11400000, guid: 1f333b9635ef6314e9dc13f7726c4ea7, type: 2}
   randomName:
   - "\uC5D0\uC774\uB4E0"
   - "\uB9C8\uB9AC\uC624"
@@ -4851,7 +4853,7 @@ MonoBehaviour:
   answerTransform: {fileID: 1645003977}
   pre_AnswerB: {fileID: 7078407878232315486, guid: 4313281f97cca4549b32a8bdfb9c6300, type: 3}
   hpTransform: {fileID: 1750007403}
-  gameoverP: {fileID: 0}
+  gameoverP: {fileID: 894989659}
 --- !u!1 &1606806786
 GameObject:
   m_ObjectHideFlags: 0

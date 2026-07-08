@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da516697f51a46746bff170c83f81e65, type: 3}
-  m_Name: IggiLover
+  m_Name: Ana
   m_EditorClassIdentifier: 
-  qnerName: "\uC774\uB07C\uC22D\uBC30\uC790"
+  qnerName: "\uC544\uB098"
   qnerImage: {fileID: -707184899, guid: 7a4d51e0b02d155479674d6c285c080b, type: 3}
   myQuestion:
-  - {fileID: 11400000, guid: 175ae47b588434f438843ffcb9add591, type: 2}
-  - {fileID: 11400000, guid: 84637efdf8b59914c95e19b7b69a09c9, type: 2}
-  - {fileID: 11400000, guid: 6876338042529e649ab302f3ed185279, type: 2}
+  - {fileID: 11400000, guid: 44893ff1505522c41ad9ac3e0e83446e, type: 2}
   correctReact:
-  - "\uCD5C\uACE0\uB85C \uC774\uB07C\uC2A4\uB7FD\uAD70!"
+  - ...
   wrondReact:
-  - "\uC774\uB07C\uB294 \uB2F9\uC2E0\uC744 \uC88B\uC544\uD558\uC9C0 \uC54A\uC744
-    \uB4EF \uD558\uB124..."
+  - "\uC544\uB2C8 \uC6B0\uB9AC \uB9C8\uC6B0\uAC00 \uB358\uC9C0\uB294\uB370?"
+  - "\uD0F1\uCEE4 \u314A\u3147 \u3148\u3148"

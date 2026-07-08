@@ -246,7 +246,7 @@ public class GameManager : MonoBehaviour
                     {
                         iscorrectset = true;
                         ans = nowQ.answer;
-                        act = () => StartCoroutine(Answerd(false));
+                        act = () => StartCoroutine(Answerd(true));
                     }
                 }
 

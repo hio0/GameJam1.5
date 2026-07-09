@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Qtext: "\uC774\uB07C\uC758 \uC601\uBB38\uBA85\uC740 \uBB34\uC5C7\uC77C\uAE4C\uC694?"
   star: 1
-  answer: Lichen
+  answer: Moss
   wrongAnswer:
-  - Iichen
-  - Ilchen
-  - IGGII
-  - IGGI
+  - Moos
+  - Moas
+  - Noos
+  - Muss

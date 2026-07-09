@@ -27,7 +27,7 @@ public class AnswerButton : MonoBehaviour
 
     void OnClick()
     {
-        StartCoroutine(GameManager.gm.Answerd(myanswer));
+        GameManager.gm.Answerd(myanswer);
     }
 
     public void AudioPlay()

@@ -9,12 +9,9 @@ public class GameOverPanel : MonoBehaviour
     public TMP_Text gameovercountT;
     public TMP_Text gameoverstarT;
 
-    public GameObject exitB;
-
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        StartCoroutine(STartTed());
+        STartTed();
     }
 
     // Update is called once per frame
@@ -35,18 +32,14 @@ public class GameOverPanel : MonoBehaviour
         }
     }
 
-    IEnumerator STartTed()
+    void STartTed()
     {
-        exitB.SetActive(false);
-        gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(1165.1f, 0);
+        gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 1165.1f);
 
-        StartCoroutine(MovingAnimation(gameObject.GetComponent<RectTransform>(), Vector2.zero, 3f));
+        StartCoroutine(MovingAnimation(gameObject.GetComponent<RectTransform>(), new Vector2(0,0), 3f));
 
         gameovercountT.text = "문제 개수: " + GameManager.gm.Qcount.ToString();
         gameoverstarT.text = "모은 별: " + GameManager.gm.mystar.ToString();
-
-        yield return new WaitForSeconds(1.5f);
-        exitB.SetActive(true);
     }
 
     public void Exited()

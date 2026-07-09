@@ -46,7 +46,6 @@ public class GameManager : MonoBehaviour
     public GameObject gameoverP;
 
     bool isquestionSet;
-    bool isgameover;
 
     private void Awake()
     {
@@ -66,12 +65,17 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isquestionSet && !isgameover)
+        if (!isquestionSet)
         {
             time = UnityEngine.Random.Range(30, 51);
 
             NewQuestion();
             isquestionSet = true;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Q))
+        {
+            GameOver();
         }
     }
 
@@ -87,7 +91,6 @@ public class GameManager : MonoBehaviour
         qner.SetActive(false);
         isquestionSet = false;
         gameoverP.SetActive(false);
-        isgameover = false;
     }
 
     IEnumerator TimerOn()
@@ -114,7 +117,7 @@ public class GameManager : MonoBehaviour
 
         if (timer <= 0)
         {
-            StartCoroutine(Answerd(null));
+            Answerd(null);
         }
     }
 
@@ -182,7 +185,6 @@ public class GameManager : MonoBehaviour
 
     void SetQ()
     {
-        bool iscorrectset = false;
         List<int> list = new List<int>();
         list.Clear();
         for (int i = 0; i < stars.childCount; i++)
@@ -210,6 +212,9 @@ public class GameManager : MonoBehaviour
         // Answer 버튼 세팅
         StartCoroutine(AnswerSet());
 
+        int isthatcorrect = 0;
+        isthatcorrect = UnityEngine.Random.Range(1, 3);
+
         for (int i = 0; i < 3; i++)
         {
             string ans = null;
@@ -217,11 +222,9 @@ public class GameManager : MonoBehaviour
 
             bool isimi = true;
             int selectqnum = 0;
-            int isthatcorrect = 0;
             while (isimi)
             {
                 selectqnum = UnityEngine.Random.Range(0, nowQ.wrongAnswer.Length);
-                isthatcorrect = UnityEngine.Random.Range(1, 101);
 
                 if (list.Count != 0 && list.Contains(selectqnum))
                 {
@@ -238,13 +241,10 @@ public class GameManager : MonoBehaviour
             {
                 ans = nowQ.wrongAnswer[selectqnum];
 
-                if (!iscorrectset)
+                ans = nowQ.wrongAnswer[selectqnum];
+                if(i == isthatcorrect)
                 {
-                    if (isthatcorrect <= 34 || i == 2)
-                    {
-                        iscorrectset = true;
-                        ans = nowQ.answer;
-                    }
+                    ans = nowQ.answer;
                 }
 
                 b.GetComponent<AnswerButton>().myanswer = ans;
@@ -310,7 +310,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public IEnumerator Answerd(string answer)
+    public void Answerd(string answer)
     {
         StopAllCoroutines();
         StartCoroutine(MovingAnimation(anser, new Vector2(2250, 171), 3));
@@ -345,12 +345,7 @@ public class GameManager : MonoBehaviour
             Destroy(answerTransform.GetChild(i).gameObject);
         }
 
-        yield return StartCoroutine(QEnd());
-
-        if(hp <= 0)
-        {
-            GameOver();
-        }
+        StartCoroutine(QEnd());
     }
 
     IEnumerator HpDown()
@@ -381,8 +376,15 @@ public class GameManager : MonoBehaviour
         float r = UnityEngine.Random.Range(3f, 5f);
         yield return new WaitForSeconds(r);
 
-        qner.SetActive(false);
-        isquestionSet = false;
+        if (hp <= 0)
+        {
+            GameOver();
+        }
+        else
+        {
+            qner.SetActive(false);
+            isquestionSet = false;
+        }
     }
 
     void StarChanged(int changed)
@@ -431,10 +433,7 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
-        isgameover= true;
-
-        SoundManager.playsound.BGMPlay(null);
-        SoundManager.playsound.SoundEffectPlay(null);
+        SoundManager.playsound.ShutUp();
 
         gameoverP.SetActive(true);
     }

@@ -7,19 +7,17 @@ using UnityEngine.SceneManagement;
 public class SceneMovedObject : MonoBehaviour
 {
     public static SceneMovedObject instance;
-    CanvasGroup can;
     public AudioClip huoguaum;
 
     private void Awake()
     {
         instance = this;
-        can = GetComponent<CanvasGroup>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        can.alpha = 0;
+        
     }
 
     // Update is called once per frame
@@ -27,9 +25,9 @@ public class SceneMovedObject : MonoBehaviour
     {
         
     }
-    IEnumerator MovingAnimation(RectTransform what, Vector2 target, float speed)
+    public IEnumerator MovingAnimation(RectTransform what, Vector2 target, float speed)
     {
-        while (what.anchoredPosition != target)
+        while ((what.anchoredPosition - target).sqrMagnitude > 0.1)
         {
             float x = Mathf.Lerp(what.anchoredPosition.x, target.x, Time.deltaTime * speed);
             float y = Mathf.Lerp(what.anchoredPosition.y, target.y, Time.deltaTime * speed);
@@ -65,7 +63,6 @@ public class SceneMovedObject : MonoBehaviour
             target = closedpos;
             rec.anchoredPosition = new Vector2(4400, rec.anchoredPosition.y);
         }
-        can.alpha = 1f;
         StartCoroutine(MovingAnimation(rec, new Vector2(target, rec.anchoredPosition.y), speed));
         SoundManager.playsound.SoundEffectPlay(huoguaum);
     }

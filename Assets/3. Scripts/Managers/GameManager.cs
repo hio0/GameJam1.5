@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
             isquestionSet = true;
         }
 
-        if(Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             GameOver();
         }
@@ -213,9 +213,9 @@ public class GameManager : MonoBehaviour
         StartCoroutine(AnswerSet());
 
         int isthatcorrect = 0;
-        isthatcorrect = UnityEngine.Random.Range(1, 3);
+        isthatcorrect = UnityEngine.Random.Range(1, nowQ.answercount);
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < nowQ.answercount; i++)
         {
             string ans = null;
             GameObject b = Instantiate(pre_AnswerB, answerTransform);
@@ -240,9 +240,7 @@ public class GameManager : MonoBehaviour
             if (!isimi)
             {
                 ans = nowQ.wrongAnswer[selectqnum];
-
-                ans = nowQ.wrongAnswer[selectqnum];
-                if(i == isthatcorrect)
+                if (i == isthatcorrect)
                 {
                     ans = nowQ.answer;
                 }
@@ -318,7 +316,7 @@ public class GameManager : MonoBehaviour
         int r = 0;
 
         bool iscorrected = false;
-        if(answer == nowQ.answer)
+        if (answer == nowQ.answer)
         {
             iscorrected = true;
         }
@@ -373,15 +371,15 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(MovingAnimation(qner.GetComponent<RectTransform>(), new Vector2(0, -850), 3));
 
-        float r = UnityEngine.Random.Range(3f, 5f);
-        yield return new WaitForSeconds(r);
-
         if (hp <= 0)
         {
             GameOver();
         }
         else
         {
+            float r = UnityEngine.Random.Range(3f, 5f);
+            yield return new WaitForSeconds(r);
+
             qner.SetActive(false);
             isquestionSet = false;
         }
@@ -399,7 +397,7 @@ public class GameManager : MonoBehaviour
     {
         plusstarT.gameObject.SetActive(true);
 
-        if(changed >= 0)
+        if (changed >= 0)
         {
             plusstarT.text = $"+{changed}";
         }

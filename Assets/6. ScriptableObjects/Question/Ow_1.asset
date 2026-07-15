@@ -15,6 +15,7 @@ MonoBehaviour:
   Qtext: "\uC544\uB2C8 \uD0F1\uC544 \uB460\uD53C \uBE14\uB77D\uC77C \uB54C \uB54C\uB9AC\uBA74
     \uC548\uB418\uB294\uAC70 \uBAA8\uB984?"
   star: 1
+  answercount: 3
   answer: "\"\uC54C\uC544\""
   wrongAnswer:
   - "\"\uBAB0\uB77C\""

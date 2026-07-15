@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Qtext: "\uB9E5\uC8FC!"
   star: 3
+  answercount: 3
   answer: "\uB9E5\uC8FC!"
   wrongAnswer:
   - "\uB9E5\uC8FC!"

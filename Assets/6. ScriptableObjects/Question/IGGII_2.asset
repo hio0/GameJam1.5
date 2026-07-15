@@ -12,14 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e0e9e01f3c5b0489cbabb222efd5c2, type: 3}
   m_Name: IGGII_2
   m_EditorClassIdentifier: 
-  Qtext: "\uD0C4\uC0DD\uD654\uAC00 \uC774\uB07C\uC778 \uB0A0\uC9DC\uB294 \uC5B8\uC81C\uC77C\uAE4C\uC694?"
+  Qtext: "\uC774\uB07C\uAC00 \uD0C4\uC0DD\uD654\uB85C \uC9C0\uC815\uB41C \uB0A0\uC9DC\uB294
+    \uC5B8\uC81C\uC77C\uAE4C\uC694?"
   star: 5
+  answercount: 5
   answer: "1\uC6D4 29\uC77C"
   wrongAnswer:
   - "7\uC6D4 25\uC77C"
   - "10\uC6D4 12\uC77C"
-  - "3\uC6D4 9\uC77C"
-  - "2\uC6D4 14\uC77C"
-  - "8\uC6D4 21\uC77C"
+  - "7\uC6D4 9\uC77C"
   - "1\uC6D4 18\uC77C"
   - "1\uC6D4 28\uC77C"

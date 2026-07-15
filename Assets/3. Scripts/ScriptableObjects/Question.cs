@@ -10,6 +10,8 @@ public class Question : ScriptableObject
 
     public int star;
 
+    public int answercount;
+
     public string answer;
 
     public string[] wrongAnswer;

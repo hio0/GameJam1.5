@@ -15,6 +15,7 @@ MonoBehaviour:
   Qtext: "Limbus Company\uC5D0\uC11C \uC81C\uC77C \uCD5C\uC545\uC778 \uC7A5\uC740
     \uBB34\uC5C7\uC77C\uAE4C\uC694?"
   star: 1
+  answercount: 5
   answer: "9\uC7A5"
   wrongAnswer:
   - "0\uC7A5"

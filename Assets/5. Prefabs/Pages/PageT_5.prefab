@@ -279,9 +279,9 @@ PrefabInstance:
       value: "<i><size=20>\"\uC815\uB9D0! \uADF8 \uAE00\uC790 \uC880 \uADF8\uB9CC
         \uC801\uACE0 \uC815\uB2F5\uC774\uB098 \uB4E4\uC5B4!\"</size></i>\n\n<i><size=20>\"...1\uC6D4
         29\uC77C\uC774\uC57C.\"</size></i>\n\n<i><size=20>\"...\uC774\uAC74 \uC9C4\uC9DC\uC9C0?\"</size></i>\n<i><size=20>\"\uBCA0\uC774\uCEE4
-        \uC120\uBC30\uB294 \uBBFF\uC5B4\uBCF4\uB77C\uAD6C, \uB9C8\uD06C.\"</size></i>\n\n...\uC544\uBB34\uD2BC,
-        \uADF8\uB0E5 \uC774\uB07C\uB294 \uB9D0 \uADF8\uB300\uB85C \uD3C9\uBC94\uD55C
-        \uC774\uB07C\uB4E4\uC744 \uBD84\uB958\uD55C\uB2E4.\n\n"
+        \uC120\uBC30\uB294 \uBBFF\uC5B4\uBCF4\uB77C\uAD6C, \uB9C8\uD06C.\"</size></i>\n\n'\uADF8\uB0E5
+        \uC774\uB07C'\uB294 \uC88B\uC740 \uD488\uC9C8\uC758 \uC774\uB07C\uB4E4\uC744
+        \uC9C0\uCE6D\uD55C\uB2E4.\n\n"
       objectReference: {fileID: 0}
     - target: {fileID: 1148033377120146666, guid: 2677d3010689dae4b9c692bb76a9cd0c, type: 3}
       propertyPath: m_Name

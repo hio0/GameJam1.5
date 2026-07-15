@@ -169,6 +169,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Small
       objectReference: {fileID: 0}
+    - target: {fileID: 1943047933313427316, guid: 2677d3010689dae4b9c692bb76a9cd0c, type: 3}
+      propertyPath: m_text
+      value: "4. \uCD5C\uC0C1\uAE09 \uC774\uB07C"
+      objectReference: {fileID: 0}
     - target: {fileID: 8316537122413108458, guid: 2677d3010689dae4b9c692bb76a9cd0c, type: 3}
       propertyPath: m_Pivot.x
       value: 0
